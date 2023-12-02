@@ -1523,6 +1523,21 @@ load_obj_stream(pdfio_obj_t *obj)	// I - Object to load
     return (false);
   }
 
+  bool null_terminator_found = false;
+  for (int i = 0; i < 32; i++)
+  {
+    if (buffer[i] == '\0')
+    {                                                                         null_terminator_found = true;
+      break;
+    }
+  }
+    
+  if (!null_terminator_found)
+  {
+    pdfioStreamClose(st);
+    return (false);
+  }
+
   _pdfioTokenPush(&tb, buffer);
 
   // Read the objects themselves...
